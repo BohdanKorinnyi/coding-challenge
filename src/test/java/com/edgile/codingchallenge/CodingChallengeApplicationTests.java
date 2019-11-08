@@ -6,8 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CodingChallengeApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    /**
+     * The test checks that application context starts up without any errors
+     */
+    @Test
+    void contextLoads() {
+    }
 }
