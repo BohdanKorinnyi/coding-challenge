@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -20,12 +21,12 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping("compare")
-    public ResponseEntity<Boolean> compare(@RequestParam String path1, @RequestParam String path2) {
-        return ok(imageService.compare(path1, path2));
+    public ResponseEntity<Boolean> compare(@RequestParam String firstUrl, @RequestParam String secondUrl) {
+        return ok(imageService.compare(firstUrl, secondUrl));
     }
 
     @GetMapping("identical")
-    public ResponseEntity<List<String>> findIdentical(@RequestParam List<String> paths) {
+    public ResponseEntity<Map<String, List<String>>> findIdentical(@RequestParam List<String> paths) {
         return ok(imageService.findIdentical(paths));
     }
 }

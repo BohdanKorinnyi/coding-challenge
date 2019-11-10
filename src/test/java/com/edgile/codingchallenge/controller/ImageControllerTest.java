@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,8 +36,8 @@ class ImageControllerTest {
 
     @Test
     void findIdentical() {
-        when(imageService.findIdentical(anyList())).thenReturn(Collections.emptyList());
-        ResponseEntity<List<String>> response = imageController.findIdentical(List.of("test1", "test2"));
+        when(imageService.findIdentical(anyList())).thenReturn(Collections.emptyMap());
+        ResponseEntity<Map<String, List<String>>> response = imageController.findIdentical(List.of("test1", "test2"));
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEmpty();
     }
