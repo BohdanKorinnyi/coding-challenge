@@ -41,12 +41,17 @@
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.11.670</version>
         </dependency>
+        <!--        it is used for object detection-->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-rekognition</artifactId>
+            <version>1.11.673</version>
+        </dependency>
         <!--        these dependencies are used for Swagger-->
         <dependency>
             <groupId>io.springfox</groupId>
