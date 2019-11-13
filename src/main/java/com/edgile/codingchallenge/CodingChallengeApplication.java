@@ -3,6 +3,8 @@ package com.edgile.codingchallenge;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.amazonaws.services.rekognition.AmazonRekognition;
+import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.edgile.codingchallenge.configuration.AwsS3Configuration;
@@ -53,6 +55,13 @@ public class CodingChallengeApplication {
     @Bean
     public AmazonS3 amazonS3(AwsS3Configuration configuration) {
         return AmazonS3ClientBuilder.standard()
+                .withRegion(configuration.getRegion())
+                .build();
+    }
+
+    @Bean
+    public AmazonRekognition amazonRekognition(AwsS3Configuration configuration) {
+        return AmazonRekognitionClientBuilder.standard()
                 .withRegion(configuration.getRegion())
                 .build();
     }

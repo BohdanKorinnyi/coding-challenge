@@ -1,7 +1,9 @@
 package com.edgile.codingchallenge.service.impl;
 
+import com.amazonaws.services.rekognition.model.Label;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.edgile.codingchallenge.service.ImageService;
+import com.edgile.codingchallenge.service.RekognitionService;
 import com.edgile.codingchallenge.service.S3Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
+    private static final double MIN_CONFIDENCE = 90.0f;
+
     private final S3Service s3Service;
+    private final RekognitionService rekognitionService;
 
     /**
      * Analyzes whether images are identical
@@ -62,5 +67,29 @@ public class ImageServiceImpl implements ImageService {
             }
         }
         return map;
+    }
+
+    /**
+     * Groups images by its content
+     * @param paths represents the n number of images links stored in an S3 bucket.
+     * @return map where key is the group name and the value is the list of paths to image
+     */
+    @Override
+    public Map<String, List<String>> groupByContent(List<String> paths) {
+        Map<String, List<String>> grouped = new HashMap<>();
+        for (String path : paths) {
+            List<Label> labels = rekognitionService.detectObjects(new AmazonS3URI(path));
+            for (Label label : labels) {
+                if (MIN_CONFIDENCE > label.getConfidence()) {
+                    continue;
+                }
+                String name = label.getName();
+                if (!grouped.containsKey(name)) {
+                    grouped.put(name, new ArrayList<>());
+                }
+                grouped.get(name).add(path);
+            }
+        }
+        return grouped;
     }
 }
