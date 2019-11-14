@@ -1,5 +1,11 @@
 package com.edgile.codingchallenge;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.edgile.codingchallenge.configuration.AwsS3Configuration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -32,5 +38,22 @@ public class CodingChallengeApplication {
     @Bean
     public MessageDigest messageDigest() throws NoSuchAlgorithmException {
         return MessageDigest.getInstance("MD5");
+    }
+
+    @Bean
+    public AWSCredentials awsCredentials(AWSCredentialsProvider awsCredentialsProvider) {
+        return awsCredentialsProvider.getCredentials();
+    }
+
+    @Bean
+    public AWSCredentialsProvider awsCredentialsProvider() {
+        return new EnvironmentVariableCredentialsProvider();
+    }
+
+    @Bean
+    public AmazonS3 amazonS3(AwsS3Configuration configuration) {
+        return AmazonS3ClientBuilder.standard()
+                .withRegion(configuration.getRegion())
+                .build();
     }
 }
